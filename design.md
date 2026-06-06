@@ -1,28 +1,28 @@
 # Frost — Style Reference
-> animated mesh gradients, frosted glass, soft pastels
+> animated mesh gradients, frosted glass, earthy neutrals
 
-**Theme:** light-translucent
+**Theme:** warm-translucent
 
-Frost's visual system evokes a dreamy, premium, living experience. It replaces flat backgrounds with an animated, organic mesh gradient in soft pastel tones (lavender, rose, peach, mint). UI elements become frosted glass panels with progressive blur, creating depth through varying levels of transparency rather than heavy shadows. The single violet accent color guides interaction with soft glows, while typography combines the technical precision of Inter with the modern, geometric softness of Outfit.
+Frost's visual system evokes a warm, organic, living experience. It replaces flat backgrounds with an animated mesh gradient in earthy neutrals and warm sunset tones (cream, sand, apricot, terracotta). UI elements become frosted glass panels with progressive blur, creating depth through varying levels of transparency rather than heavy shadows. The single terracotta orange accent color guides interaction with soft glows, while typography combines the technical precision of Inter with the modern, geometric softness of Outfit.
 
 ## Tokens — Colors
 
 | Name | Value | Token | Role |
 |------|-------|-------|------|
-| Glass White | `rgba(255, 255, 255, 0.12)` | `--color-glass-white` | Base glass layer (Level 1) |
-| Glass Strong | `rgba(255, 255, 255, 0.22)` | `--color-glass-strong` | Elevated glass layer (Level 2/3) |
-| Glass Border | `rgba(255, 255, 255, 0.25)` | `--color-glass-border` | Frosted luminous borders |
-| Accent | `#7c5bf5` | `--color-accent` | Primary violet accent for interactive elements |
-| Accent Glow | `rgba(124, 91, 245, 0.3)` | `--color-accent-glow` | Hover glows and selection states |
-| Text Primary | `#ffffff` | `--color-text-primary` | Main text on frosted surfaces |
-| Text Secondary| `rgba(255, 255, 255, 0.7)` | `--color-text-secondary`| Muted text |
+| Glass White | `rgba(255, 255, 255, 0.2)` | `--color-glass-white` | Base glass layer (Level 1) |
+| Glass Strong | `rgba(255, 255, 255, 0.3)` | `--color-glass-strong` | Elevated glass layer (Level 2/3) |
+| Glass Border | `rgba(255, 255, 255, 0.4)` | `--color-glass-border` | Frosted luminous borders |
+| Accent | `#e07a5f` | `--color-accent` | Terracotta orange accent for interactive elements |
+| Accent Glow | `rgba(224, 122, 95, 0.3)` | `--color-accent-glow` | Hover glows and selection states |
+| Text Primary | `#332722` | `--color-text-primary` | Deep espresso brown text |
+| Text Secondary| `rgba(51, 39, 34, 0.7)` | `--color-text-secondary`| Muted text |
 | Charcoal Text | `#1b1b1b` | `--color-charcoal-text` | Only for rare high-contrast needs |
 
 **Background Mesh Gradient Stops:**
-- Rose: `#f4a0b5` (`--color-rose`)
-- Peach: `#f7c59f` (`--color-peach`)
-- Lavender: `#b8a9e8` (`--color-lavender`)
-- Mint: `#a8dcd1` (`--color-mint`)
+- Rose (Cream): `#fcfaf5` (`--color-rose`)
+- Peach (Sand): `#f5deb3` (`--color-peach`)
+- Lavender (Apricot): `#f4cca1` (`--color-lavender`)
+- Mint (Terracotta): `#e89f71` (`--color-mint`)
 
 ## Tokens — Typography
 
