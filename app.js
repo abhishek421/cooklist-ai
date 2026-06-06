@@ -320,10 +320,18 @@ function renderPantryTags() {
   userPantry.forEach((item, index) => {
     const tagSpan = document.createElement("span");
     tagSpan.className = "tag";
-    tagSpan.innerHTML = `
-      ${item}
-      <button type="button" class="btn-remove-tag" data-idx="${index}" aria-label="Remove ${item}">&times;</button>
-    `;
+    
+    // Safely append text node
+    tagSpan.appendChild(document.createTextNode(item + " "));
+    
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "btn-remove-tag";
+    btn.setAttribute("data-idx", index);
+    btn.setAttribute("aria-label", `Remove ${item}`);
+    btn.innerHTML = "&times;";
+    
+    tagSpan.appendChild(btn);
     tagsWrapper.appendChild(tagSpan);
   });
 }
@@ -355,9 +363,27 @@ suggestionsList.addEventListener("click", (e) => {
    AI Constraints Matching Planner Engine
    ========================================================================== */
 
-function generateMealPlan(budget, people, diet, maxTime, pantry) {
-  const lowerPantry = pantry.map(i => i.toLowerCase());
+function isIngredientInPantry(ing, pantryList) {
+  const clean = (str) => str.toLowerCase().replace(/[(),.-]/g, ' ').replace(/\s+/g, ' ').trim();
+  const escapeRegExp = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  
+  const cr = clean(ing);
+  return pantryList.some(p => {
+    const cp = clean(p);
+    if (cr === cp) return true;
+    
+    // Check for word boundary match
+    try {
+      const regexP = new RegExp('\\b' + escapeRegExp(cp) + '\\b');
+      const regexR = new RegExp('\\b' + escapeRegExp(cr) + '\\b');
+      return regexP.test(cr) || regexR.test(cp);
+    } catch (e) {
+      return cr.includes(cp) || cp.includes(cr);
+    }
+  });
+}
 
+function generateMealPlan(budget, people, diet, maxTime, pantry) {
   // Constraint filters
   const filterMeal = (mealList) => {
     return mealList.filter(meal => {
@@ -400,9 +426,7 @@ function generateMealPlan(budget, people, diet, maxTime, pantry) {
 
   // Categorize between Pantry and Grocery shopping list
   allIngredients.forEach(ing => {
-    const lowercaseIng = ing.toLowerCase();
-    const isOwned = lowerPantry.some(p => lowercaseIng.includes(p) || p.includes(lowercaseIng));
-
+    const isOwned = isIngredientInPantry(ing, pantry);
     if (!isOwned) {
       rawGroceryList.push(ing);
     }
@@ -549,7 +573,7 @@ function renderResults(plan, budget, people, diet, time) {
     ingredientsUl.innerHTML = "";
     ingredientsList.forEach(ing => {
       const li = document.createElement("li");
-      const isOwned = userPantry.some(p => ing.toLowerCase().includes(p.toLowerCase()) || p.toLowerCase().includes(ing.toLowerCase()));
+      const isOwned = isIngredientInPantry(ing, userPantry);
       li.textContent = ing + (isOwned ? " (In Pantry)" : "");
       if (isOwned) {
         li.style.opacity = "0.6";
@@ -582,16 +606,25 @@ function renderResults(plan, budget, people, diet, time) {
     plan.groceryList.forEach((item, index) => {
       const li = document.createElement("li");
       li.className = "shopping-item";
-      li.innerHTML = `
-        <input type="checkbox" id="grocery-item-${index}">
-        <label for="grocery-item-${index}"><span>${item}</span></label>
-      `;
+      
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.id = `grocery-item-${index}`;
+      
+      const label = document.createElement("label");
+      label.setAttribute("for", `grocery-item-${index}`);
+      
+      const span = document.createElement("span");
+      span.textContent = item;
+      
+      label.appendChild(span);
+      li.appendChild(input);
+      li.appendChild(label);
       groceryShoppingList.appendChild(li);
 
       // Handle checkbox toggle class
-      const checkbox = li.querySelector("input");
-      checkbox.addEventListener("change", () => {
-        if (checkbox.checked) {
+      input.addEventListener("change", () => {
+        if (input.checked) {
           li.classList.add("checked");
         } else {
           li.classList.remove("checked");
@@ -611,11 +644,22 @@ function renderResults(plan, budget, people, diet, time) {
     plan.substitutions.forEach(sub => {
       const row = document.createElement("div");
       row.className = "substitution-card";
-      row.innerHTML = `
-        <span class="sub-original">${sub.original}</span>
-        <span class="sub-arrow">&rarr;</span>
-        <span class="sub-replacement">${sub.replacement}</span>
-      `;
+      
+      const spanOriginal = document.createElement("span");
+      spanOriginal.className = "sub-original";
+      spanOriginal.textContent = sub.original;
+      
+      const spanArrow = document.createElement("span");
+      spanArrow.className = "sub-arrow";
+      spanArrow.innerHTML = "&rarr;";
+      
+      const spanReplacement = document.createElement("span");
+      spanReplacement.className = "sub-replacement";
+      spanReplacement.textContent = sub.replacement;
+      
+      row.appendChild(spanOriginal);
+      row.appendChild(spanArrow);
+      row.appendChild(spanReplacement);
       substitutionsListContainer.appendChild(row);
     });
   }

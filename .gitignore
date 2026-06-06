@@ -20,3 +20,4 @@ build/
 
 # Gemini
 .gemini/
+.vercel
