@@ -158,6 +158,7 @@ const ingredientInput = document.getElementById("ingredient-input");
 const tagsWrapper = document.getElementById("tags-wrapper");
 const suggestionsList = document.getElementById("suggestions-list");
 const progressBarFill = document.getElementById("progress-bar-fill");
+const pantryAnnouncer = document.getElementById("pantry-announcer");
 
 // Terminal logs
 const terminalLogs = document.getElementById("terminal-logs");
@@ -306,13 +307,16 @@ function addPantryIngredient(ingredientName) {
   if (!exists) {
     userPantry.push(cleaned);
     renderPantryTags();
+    if (pantryAnnouncer) pantryAnnouncer.textContent = `${cleaned} added to pantry.`;
   }
   ingredientInput.value = "";
 }
 
 function removePantryIngredient(index) {
+  const removed = userPantry[index];
   userPantry.splice(index, 1);
   renderPantryTags();
+  if (pantryAnnouncer) pantryAnnouncer.textContent = `${removed} removed from pantry.`;
 }
 
 function renderPantryTags() {
@@ -536,6 +540,7 @@ async function runLoadingSequence(budget, people, diet, time, pantry) {
   setTimeout(() => {
     renderResults(resultPlan, budget, people, diet, time);
     showScreen(resultsScreen);
+    if (typeof observeCards === 'function') observeCards();
   }, 300);
 }
 
@@ -737,3 +742,35 @@ btnDownloadPlan.addEventListener("click", () => {
   link.click();
   URL.revokeObjectURL(url);
 });
+
+/* ==========================================================================
+   Animations & Intersection Observers
+   ========================================================================== */
+
+const observerOptions = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.1
+};
+
+const observer = new IntersectionObserver((entries, obs) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animation = `floatUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards`;
+      obs.unobserve(entry.target);
+    }
+  });
+}, observerOptions);
+
+function observeCards() {
+  const cards = document.querySelectorAll('#results-screen .feature-card');
+  cards.forEach((card, index) => {
+    card.style.opacity = '0';
+    card.style.animation = 'none';
+    // Staggered entrance
+    setTimeout(() => {
+      observer.observe(card);
+    }, index * 100);
+  });
+}
+

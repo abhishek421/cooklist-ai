@@ -8,11 +8,20 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Inter:wght@400;500;700&family=Oswald:wght@700;900&family=Space+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Inter:wght@400;500;700&family=Outfit:wght@400;500;700;900&family=Space+Mono&display=swap" rel="stylesheet">
   <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Animated Background Layers -->
+  <div class="mesh-bg"></div>
+  <div class="noise-overlay"></div>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
   <!-- Header / Navigation -->
   <header class="app-header">
     <div class="header-container">
@@ -132,6 +141,7 @@
                   <input type="text" id="ingredient-input" placeholder="Type ingredient & press Enter (e.g. Rice, Eggs, Onion)" maxlength="50">
                 </div>
                 <small class="help-text">Adding ingredients you already have will help reduce the grocery list cost!</small>
+                <div aria-live="polite" class="sr-only" id="pantry-announcer"></div>
                 
                 <!-- Quick suggestions -->
                 <div class="suggestions-container">

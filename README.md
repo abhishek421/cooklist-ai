@@ -10,6 +10,20 @@
 
 ---
 
+## 🎯 Problem Statement
+
+**Challenge: A cooking to-do list**
+
+Build a simple AI micro-app that helps a user generate a personal cooking to-do list based on their day.
+
+- A structured meal planning flow that produces:
+  - Breakfast/Lunch/Dinner plan
+  - Grocery list
+  - Substitutions
+  - Budget feasibility logic
+
+---
+
 ## ✨ Features
 
 | Feature | Description |
