@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CookList AI — Personalized Meal Planner & Shopping Assistant</title>
+  <meta name="description" content="Generate a personalized, budget-aware meal plan, grocery list, and ingredient substitutions in seconds.">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Inter:wght@400;500;700&family=Oswald:wght@700;900&family=Space+Mono&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="#" class="logo" id="logo-link">CookList <span class="cursive-accent">AI</span></a>
+      <nav class="nav-links">
+        <a href="#about" class="nav-item" id="nav-about">About</a>
+        <a href="#features" class="nav-item" id="nav-features">Features</a>
+        <button class="nav-btn-outline" id="nav-start-btn">Start Planning</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Screen 1: Hero & Landing -->
+    <section id="landing-screen" class="screen active">
+      <div class="hero-bg-accent"></div>
+      <div class="hero-content">
+        <h1 class="hero-title">COOKLIST AI</h1>
+        <h2 class="hero-subtitle">Decide what to cook today in under 60 seconds.</h2>
+        <p class="hero-description">
+          Generate a personalized meal plan, missing grocery shopping list, budget-aware analysis, and smart ingredient substitutions based on your time and pantry.
+        </p>
+        <div class="hero-cta-wrapper">
+          <button class="btn-primary-action" id="start-planning-cta">Plan Today's Meals</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 2: Constraints Form -->
+    <section id="form-screen" class="screen">
+      <div class="form-container">
+        <div class="form-card">
+          <div class="form-header">
+            <span class="cursive-subtitle">Your Preferences</span>
+            <h2 class="form-title">Enter Cooking Constraints</h2>
+            <p class="form-description">Tell us what you have and what you need. We'll handle the rest.</p>
+          </div>
+
+          <form id="preferences-form" novalidate>
+            <!-- Step Indicators -->
+            <div class="steps-progress" role="progressbar" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1" aria-label="Planning progress">
+              <div class="progress-bar-fill" id="progress-bar-fill"></div>
+            </div>
+
+            <!-- Fieldset 1: Budget & Servings -->
+            <div class="form-step-section active" data-step="1">
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label for="input-budget">Daily Budget (₹)</label>
+                  <input type="number" id="input-budget" min="10" max="10000" placeholder="e.g. 500" required aria-describedby="error-budget" aria-invalid="false">
+                  <span class="error-msg" id="error-budget" role="alert">Please enter a valid daily budget (₹10 - ₹10,000).</span>
+                </div>
+                <div class="form-group">
+                  <label for="input-people">Number of People</label>
+                  <input type="number" id="input-people" min="1" max="20" placeholder="e.g. 2" required aria-describedby="error-people" aria-invalid="false">
+                  <span class="error-msg" id="error-people" role="alert">Please specify number of people (1 - 20).</span>
+                </div>
+              </div>
+
+              <div class="form-navigation-buttons">
+                <button type="button" class="btn-nav btn-next" data-next="2">Next Step</button>
+              </div>
+            </div>
+
+            <!-- Fieldset 2: Diet & Cooking Time -->
+            <div class="form-step-section" data-step="2">
+              <fieldset class="form-group">
+                <legend class="form-group-label">Dietary Preference</legend>
+                <div class="radio-pill-group">
+                  <label class="radio-pill">
+                    <input type="radio" name="diet" value="vegetarian" checked>
+                    <span>Vegetarian</span>
+                  </label>
+                  <label class="radio-pill">
+                    <input type="radio" name="diet" value="vegan">
+                    <span>Vegan</span>
+                  </label>
+                  <label class="radio-pill">
+                    <input type="radio" name="diet" value="non-vegetarian">
+                    <span>Non-Vegetarian</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <fieldset class="form-group">
+                <legend class="form-group-label">Available Cooking Time (Per Meal)</legend>
+                <div class="radio-pill-group">
+                  <label class="radio-pill">
+                    <input type="radio" name="cooking-time" value="15">
+                    <span>15 Mins</span>
+                  </label>
+                  <label class="radio-pill">
+                    <input type="radio" name="cooking-time" value="30" checked>
+                    <span>30 Mins</span>
+                  </label>
+                  <label class="radio-pill">
+                    <input type="radio" name="cooking-time" value="60">
+                    <span>60 Mins</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <div class="form-navigation-buttons">
+                <button type="button" class="btn-nav btn-prev" data-prev="1">Back</button>
+                <button type="button" class="btn-nav btn-next" data-next="3">Next Step</button>
+              </div>
+            </div>
+
+            <!-- Fieldset 3: Pantry Ingredients -->
+            <div class="form-step-section" data-step="3">
+              <div class="form-group">
+                <label for="ingredient-input">Ingredients Available at Home (Pantry)</label>
+                <div class="tag-input-container">
+                  <div class="tags-wrapper" id="tags-wrapper">
+                    <!-- Dynamic tags will appear here -->
+                  </div>
+                  <input type="text" id="ingredient-input" placeholder="Type ingredient & press Enter (e.g. Rice, Eggs, Onion)">
+                </div>
+                <small class="help-text">Adding ingredients you already have will help reduce the grocery list cost!</small>
+                
+                <!-- Quick suggestions -->
+                <div class="suggestions-container">
+                  <span class="suggestion-label">Common items:</span>
+                  <div class="suggestions-list" id="suggestions-list">
+                    <button type="button" class="btn-tag-suggestion" data-val="Rice">Rice</button>
+                    <button type="button" class="btn-tag-suggestion" data-val="Onion">Onion</button>
+                    <button type="button" class="btn-tag-suggestion" data-val="Tomato">Tomato</button>
+                    <button type="button" class="btn-tag-suggestion" data-val="Eggs">Eggs</button>
+                    <button type="button" class="btn-tag-suggestion" data-val="Potato">Potato</button>
+                    <button type="button" class="btn-tag-suggestion" data-val="Milk">Milk</button>
+                    <button type="button" class="btn-tag-suggestion" data-val="Bread">Bread</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-navigation-buttons">
+                <button type="button" class="btn-nav btn-prev" data-prev="2">Back</button>
+                <button type="submit" class="btn-submit-action" id="submit-plan-btn">Generate Meal Plan</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 3: AI Processing Loader -->
+    <section id="loader-screen" class="screen" role="status" aria-live="polite" aria-busy="true">
+      <div class="loader-content">
+        <div class="spinner-container">
+          <div class="spinner"></div>
+        </div>
+        <h2 class="loader-title">COOKLIST AI IS GENERATING</h2>
+        <div class="terminal-logs-window">
+          <div class="terminal-logs" id="terminal-logs">
+            <p class="log-line">> Establishing secure sandbox...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 4: Results Dashboard -->
+    <section id="results-screen" class="screen">
+      <div class="results-dashboard-container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+          <div>
+            <span class="cursive-subtitle" id="dashboard-subtitle-meta">2 People • Vegetarian • 30 mins</span>
+            <h1 class="dashboard-title">Today's Meal Plan</h1>
+          </div>
+          <div class="dashboard-actions">
+            <button class="btn-action-outline" id="btn-copy-plan">Copy Plain Text</button>
+            <button class="btn-action-outline" id="btn-download-plan">Download Plan</button>
+            <button class="btn-primary-action" id="btn-restart-planning">Plan New Meals</button>
+          </div>
+        </div>
+
+        <!-- Budget Feasibility Section -->
+        <div class="dashboard-row budget-row">
+          <div class="feature-card budget-status-card" id="budget-card">
+            <div class="budget-card-header">
+              <span class="card-caption">BUDGET FEASIBILITY</span>
+              <span class="budget-badge" id="budget-badge-status">WITHIN BUDGET</span>
+            </div>
+            <div class="budget-card-main">
+              <div class="budget-metric">
+                <span class="metric-value" id="dashboard-estimated-cost">₹0</span>
+                <span class="metric-label">Estimated Grocery Cost</span>
+              </div>
+              <div class="budget-comparison-bar" aria-hidden="true">
+                <div class="comparison-bar-fill" id="budget-bar-fill"></div>
+                <div class="comparison-bar-marker" id="budget-limit-marker">
+                  <span class="marker-label">Limit: <span id="dashboard-budget-limit">₹0</span></span>
+                </div>
+              </div>
+              <p class="budget-card-footer" id="budget-status-message">
+                Your estimated grocery list cost is within the daily limit. Great job using home ingredients!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Meals Row -->
+        <div class="dashboard-grid meals-grid">
+          <!-- Breakfast Card -->
+          <div class="feature-card meal-card" data-meal="breakfast">
+            <div class="meal-card-header">
+              <span class="meal-label">BREAKFAST</span>
+              <span class="meal-time" id="breakfast-time">15 mins</span>
+            </div>
+            <h3 class="meal-name" id="breakfast-name">Veg Omelette + Toast</h3>
+            <h4 class="section-label">Ingredients Needed:</h4>
+            <ul class="meal-ingredients-list" id="breakfast-ingredients">
+              <!-- Dynamically populated -->
+            </ul>
+          </div>
+
+          <!-- Lunch Card -->
+          <div class="feature-card meal-card" data-meal="lunch">
+            <div class="meal-card-header">
+              <span class="meal-label">LUNCH</span>
+              <span class="meal-time" id="lunch-time">20 mins</span>
+            </div>
+            <h3 class="meal-name" id="lunch-name">Tomato Rice + Salad</h3>
+            <h4 class="section-label">Ingredients Needed:</h4>
+            <ul class="meal-ingredients-list" id="lunch-ingredients">
+              <!-- Dynamically populated -->
+            </ul>
+          </div>
+
+          <!-- Dinner Card -->
+          <div class="feature-card meal-card" data-meal="dinner">
+            <div class="meal-card-header">
+              <span class="meal-label">DINNER</span>
+              <span class="meal-time" id="dinner-time">25 mins</span>
+            </div>
+            <h3 class="meal-name" id="dinner-name">Vegetable Pulao + Raita</h3>
+            <h4 class="section-label">Ingredients Needed:</h4>
+            <ul class="meal-ingredients-list" id="dinner-ingredients">
+              <!-- Dynamically populated -->
+            </ul>
+          </div>
+        </div>
+
+        <!-- Grocery List and Substitutions Grid -->
+        <div class="dashboard-grid secondary-grid">
+          <!-- Grocery List Card -->
+          <div class="feature-card grocery-list-card">
+            <h3 class="card-title">Grocery Shopping List</h3>
+            <p class="card-desc">Missing items to purchase. Tap to check off.</p>
+            <ul class="shopping-list" id="grocery-shopping-list">
+              <!-- Dynamic grocery items with checkboxes -->
+            </ul>
+          </div>
+
+          <!-- Substitutions Card -->
+          <div class="feature-card substitutions-card">
+            <h3 class="card-title">Ingredient Substitutions</h3>
+            <p class="card-desc">Alternatives if ingredients are unavailable at the store.</p>
+            <div class="substitutions-container" id="substitutions-list-container">
+              <!-- Dynamic substitution pairs -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>&copy; 2026 CookList AI. Built with maximum control & premium simplicity.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
